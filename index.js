@@ -2,27 +2,26 @@ var input = document.getElementById("input");
 var button = document.getElementById("enter");
 var ul = document.querySelector("ul");
 
-function createButton(){
-	var button = document.createElement("BUTTON");
-	button.appendChild(document.createTextNode("Delete"));
-	li.appendChild(button);
+function createElement(element, text, append){
+	var el = document.createElement(element);
+	el.appendChild(document.createTextNode(text));
+	append.appendChild(el);
+	return el;
 }
 
-function DeleteMethod(){
-	li.remove();
+function DeleteEvent(deleteButton, element){
+	deleteButton.addEventListener("click", function(){
+		return element.remove();
+	});
+
 }
 
 function createLiElement(){
-	var li = document.createElement("li");
-	var button = document.createElement("BUTTON");
-	button.appendChild(document.createTextNode("Delete"));
+	var li = createElement("li", input.value, ul);
+	var deleteButton = createElement("button", "delete", li);
+	var readyButton = createElement("button", "ready", li);
 
-	li.appendChild(button);
-	li.appendChild(document.createTextNode(input.value));
-	ul.appendChild(li);
-	button.addEventListener("click", function(){
-		return li.remove();
-	})
+	DeleteEvent(deleteButton, li);
 	input.value = "";
 }
 
