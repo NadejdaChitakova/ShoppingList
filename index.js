@@ -2,46 +2,52 @@ var input = document.getElementById("input");
 var button = document.getElementById("enter");
 var ul = document.querySelector("ul");
 
-function createButton(){
-	var button = document.createElement("BUTTON");
-	button.appendChild(document.createTextNode("Delete"));
-	li.appendChild(button);
+function createElement(element, text, append){
+	var el = document.createElement(element);
+	el.appendChild(document.createTextNode(text));
+	append.appendChild(el);
+	return el;
 }
 
-function DeleteMethod(){
-	li.remove();
+function addOnClickEvent(el, callback){
+	el.addEventListener("click", callback);
+}
+
+function removeListItem(event){
+	var listItem = event.target.parentElement;
+	listItem.remove();
+}
+
+function addTextDecoration(event){
+	var listItem = event.target.parentElement;
+	return listItem.style.textDecoration = "line-through";
 }
 
 function createLiElement(){
-	var li = document.createElement("li");
-	var button = document.createElement("BUTTON");
-	button.appendChild(document.createTextNode("Delete"));
+	var li = createElement("li", input.value, ul);
+	var deleteButton = createElement("button", "delete", li);
+	var readyButton = createElement("button", "ready", li);
 
-	li.appendChild(button);
-	li.appendChild(document.createTextNode(input.value));
-	ul.appendChild(li);
-	button.addEventListener("click", function(){
-		return li.remove();
-	})
+	addOnClickEvent( deleteButton, removeListItem );
+	addOnClickEvent( readyButton, addTextDecoration );
+
 	input.value = "";
 }
 
-function GetInputLength(){
+function getInputLength(){
 	return input.value.length;
 }
 
-function addListAfterClick(){
-	if (GetInputLength() > 0) {
+function AddShoppingListItem(event){
+	var	isEnterButton	= event.target.id === "enter";
+	var isEnterKey		= event.keyCode === 13;
+	var isInputEmpty	= getInputLength === 0;
+
+	if ( ! isInputEmpty && ( isEnterKey || isEnterButton ) ) {
 		createLiElement();
 	}
 }
 
-function addAfterKeypress(event){
-	if (GetInputLength() > 0 && event.keyCode === 13) {
-		createLiElement();
-	}
-}
-
-button.addEventListener("click", addListAfterClick);
-input.addEventListener("keypress", addAfterKeypress);
+addOnClickEvent(button, AddShoppingListItem);
+input.addEventListener("keypress", AddShoppingListItem);
 	
